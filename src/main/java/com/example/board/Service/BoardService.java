@@ -21,7 +21,7 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	@Transactional
-	public Long createBoard(BoardDto boardDto) {
+	public Long create(BoardDto boardDto) {
 		User user = new User(boardDto.getUser().getName());
 		Board board = new Board(boardDto.getTitle(), boardDto.getContent(), user);
 		Board newBoard = boardRepository.save(board);
@@ -29,7 +29,7 @@ public class BoardService {
 		return newBoard.getId();
 	}
 
-	public BoardDto getBoard(Long id) {
+	public BoardDto getOne(Long id) {
 		Board board = boardRepository.findById(id).orElseThrow(NoSuchElementException::new);
 		User user = board.getUser();
 
@@ -45,7 +45,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void updateBoard(BoardDto boardDto) {
+	public void update(BoardDto boardDto) {
 		Board board = boardRepository.findById(boardDto.getId())
 			.orElseThrow(NoSuchElementException::new);
 
@@ -53,7 +53,7 @@ public class BoardService {
 		boardRepository.save(updatedBoard);
 	}
 	@Transactional
-	public void deleteBoard(Long id) {
+	public void delete(Long id) {
 		boardRepository.deleteById(id);
 	}
 }
