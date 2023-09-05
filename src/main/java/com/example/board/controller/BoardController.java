@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("/board")
-	public ResponseEntity<Long> createBoard(BoardDto boardDto) {
+	public ResponseEntity<Long> createBoard(@RequestBody BoardDto boardDto) {
 		Long boardId = boardService.create(boardDto);
 		return new ResponseEntity<>(boardId, HttpStatus.OK);
 	}
@@ -40,8 +41,8 @@ public class BoardController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PutMapping("/board/{id}")
-	public ResponseEntity updateBoard(BoardDto boardDto) {
+	@PutMapping("/board")
+	public ResponseEntity updateBoard(@RequestBody BoardDto boardDto) {
 		boardService.update(boardDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

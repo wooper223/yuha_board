@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.board.Repository.BoardRepository;
 import com.example.board.dto.BoardDto;
-import com.example.board.dto.UserDto;
 import com.example.board.entity.Board;
-import com.example.board.entity.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,8 +20,7 @@ public class BoardService {
 
 	@Transactional
 	public Long create(BoardDto boardDto) {
-		User user = new User(boardDto.getUser().getName());
-		Board board = new Board(boardDto.getTitle(), boardDto.getContent(), user);
+		Board board = new Board(boardDto.getTitle(), boardDto.getContent(), boardDto.getName());
 		Board newBoard = boardRepository.save(board);
 
 		return newBoard.getId();
@@ -31,16 +28,12 @@ public class BoardService {
 
 	public BoardDto getOne(Long id) {
 		Board board = boardRepository.findById(id).orElseThrow(NoSuchElementException::new);
-		User user = board.getUser();
-
-		UserDto userDto = UserDto.builder()
-			.name(user.getName())
-			.build();
 
 		return BoardDto.builder()
+			.id(board.getId())
 			.title(board.getTitle())
 			.content(board.getContent())
-			.user(userDto)
+			.name(board.getName())
 			.build();
 	}
 
@@ -49,9 +42,9 @@ public class BoardService {
 		Board board = boardRepository.findById(boardDto.getId())
 			.orElseThrow(NoSuchElementException::new);
 
-		Board updatedBoard = board.updateBoard(board.getTitle(), board.getContent());
-		boardRepository.save(updatedBoard);
+		board.updateBoard(boardDto.getTitle(), boardDto.getContent());
 	}
+
 	@Transactional
 	public void delete(Long id) {
 		boardRepository.deleteById(id);

@@ -1,12 +1,12 @@
 package com.example.board.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 @Entity
 public class Board {
@@ -18,19 +18,19 @@ public class Board {
 
 	private String content;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
+	private String name;
 
-	public Board(String title, String content, User user) {
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// private User user;
+
+	public Board(String title, String content, String name) {
 		this.title = title;
 		this.content = content;
-		this.user = user;
+		this.name = name;
 	}
 
-	public Board updateBoard(String title, String content) {
+	public void updateBoard(String title, String content) {
 		this.title = title;
 		this.content = content;
-
-		return this;
 	}
 }
